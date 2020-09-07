@@ -1,0 +1,40 @@
+#include <VarSpeedServo.h> //INCLUSÃO DA BIBLIOTECA NECESSÁRIA
+
+VarSpeedServo servo1; 
+VarSpeedServo servo2;  
+int servo1Pin = 9; //PINO DIGITAL UTILIZADO PELO SERVO DA BARCA
+int servo2Pin = 8; //PINO DIGITAL UTILIZADO PELO SERVO CENTRAL  
+
+int buttonState = LOW; // variável para armazenar a leitura da porta
+     
+void setup(){
+  servo1.attach(servo1Pin); //ASSOCIAÇÃO DO PINO DIGITAL AO OBJETO DO TIPO SERVO
+  servo2.attach(servo2Pin); //ASSOCIAÇÃO DO PINO DIGITAL AO OBJETO DO TIPO SERVO
+
+  servo1.write(0,255,true);
+  servo2.write(0,255,true);
+  pinMode(12,INPUT);// inicializa a porta 12 como porta de entrada / leitura.
+  Serial.begin(9600);
+  delay(1000);
+}
+ 
+void loop(){
+
+  buttonState = digitalRead(12);// le o estado da porta digital 12
+
+  // se ele estiver em alta, o buttonState vai ser HIGH:
+  if (buttonState == HIGH) {     
+    // abre o projetor   
+    servo1.write(170,100,true); //GIRA O SERVO 1 EM 170º 
+    servo2.write(170,100,true); //GIRA O SERVO 2 EM 170º
+    Serial.println("Entrada em alta");
+    delay(50);  
+  } 
+  else {
+    // fecha o projetor
+    servo1.write(10,100,true); //GIRA O SERVO 1 DE VOLTA PARA 10º
+    servo2.write(10,100,true); //GIRA O SERVO 2 DE VOLTA PARA 10º
+    Serial.println("Entrada em baixa");
+    delay(50);   
+  }
+}
